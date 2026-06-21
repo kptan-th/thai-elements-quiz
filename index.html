@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบประเมินธาตุเจ้าเรือน | กรุงเทพทิพโอสถ</title>
+    <meta name="description" content="แบบประเมินธาตุเจ้าเรือนแพทย์แผนไทย เพื่อการเข้าใจพื้นฐานร่างกายและแนวทางการปรับสมดุลสุขภาพ โดยกรุงเทพทิพโอสถ">
+    <link rel="stylesheet" href="style.css">
+    <!-- Load LINE LIFF SDK -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+    <div class="app-background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-wrapper">
+                <img src="logo%20bangkoktiposod_Send%20[Converted].png" alt="กรุงเทพทิพโอสถ" class="brand-logo">
+            </div>
+            <h1 class="brand-title">วิเคราะห์ธาตุเจ้าเรือน</h1>
+            <p class="brand-subtitle">ศาสตร์สมดุลแพทย์แผนไทย เพื่อสุขภาพที่ดีจากภายใน</p>
+        </header>
+
+        <!-- Main Card -->
+        <main class="main-card">
+            
+            <!-- STEP 1: Welcome & Birth Month -->
+            <section id="step-welcome" class="card-step active">
+                <div class="step-intro">
+                    <h2 id="welcome-title">ทำความรู้จัก "ธาตุเจ้าเรือน" ของคุณ</h2>
+                    <p>ในทฤษฎีการแพทย์แผนไทย ร่างกายของมนุษย์ประกอบด้วยธาตุทั้ง 4 คือ ดิน น้ำ ลม และไฟ การทำความเข้าใจแนวโน้มธาตุประจำตัว จะช่วยให้คุณปรับพฤติกรรม อาหาร และการใช้ชีวิตได้อย่างสมดุล</p>
+                </div>
+                
+                <div class="input-group">
+                    <label for="birth-month">ระบุเดือนเกิดของคุณ</label>
+                    <div class="select-wrapper">
+                        <select id="birth-month" required>
+                            <option value="" disabled selected>เลือกเดือนเกิด...</option>
+                            <option value="1">มกราคม</option>
+                            <option value="2">กุมภาพันธ์</option>
+                            <option value="3">มีนาคม</option>
+                            <option value="4">เมษายน</option>
+                            <option value="5">พฤษภาคม</option>
+                            <option value="6">มิถุนายน</option>
+                            <option value="7">กรกฎาคม</option>
+                            <option value="8">สิงหาคม</option>
+                            <option value="9">กันยายน</option>
+                            <option value="10">ตุลาคม</option>
+                            <option value="11">พฤศจิกายน</option>
+                            <option value="12">ธันวาคม</option>
+                        </select>
+                    </div>
+                    <span class="input-helper">*เดือนเกิดจะถูกนำไปคำนวณธาตุเจ้าเรือนโดยไม่แสดงธาตุก่อนประเมินเสร็จเพื่อเลี่ยงอคติ</span>
+                </div>
+
+                <div class="action-bar">
+                    <button type="button" id="btn-start" class="btn btn-primary" disabled>เริ่มทำแบบประเมินอาการปัจจุบัน</button>
+                </div>
+            </section>
+
+            <!-- STEP 2: Symptoms Assessment -->
+            <section id="step-assessment" class="card-step">
+                <div class="progress-container">
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar" id="assessment-progress" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-text" id="progress-step-indicator">คำถามข้อที่ 1 จาก 40</div>
+                </div>
+
+                <div class="question-container">
+                    <h3 class="assessment-instruction">โปรดประเมินระดับความบ่อยของอาการต่อไปนี้ในช่วง 3 เดือนที่ผ่านมา:</h3>
+                    
+                    <div class="question-card">
+                        <p id="question-text" class="question-text">ดึงข้อมูลคำถาม...</p>
+                    </div>
+                    
+                    <div class="rating-grid" id="rating-container">
+                        <!-- Rating options generated via JS -->
+                    </div>
+                </div>
+
+                <div class="action-bar justify-between">
+                    <button type="button" id="btn-prev" class="btn btn-secondary">ย้อนกลับ</button>
+                    <button type="button" id="btn-next" class="btn btn-primary" disabled>ถัดไป</button>
+                </div>
+            </section>
+
+            <!-- STEP 3: Results -->
+            <section id="step-result" class="card-step">
+                <h2 class="result-header">ผลการวิเคราะห์ธาตุเจ้าเรือน</h2>
+
+                <!-- LINE Chat Notification Box (LIFF only) -->
+                <div id="liff-status-msg" class="liff-status-box" style="display: none;">
+                    <span class="liff-icon">📬</span> 
+                    <span class="liff-text">ระบบได้ส่งผลการวิเคราะห์ในรูปแบบการ์ดสรุปผลสุขภาพเข้าแชท LINE ของคุณเรียบร้อยแล้ว!</span>
+                </div>
+                
+                <div class="result-summary-box">
+                    <div class="summary-item">
+                        <span class="label">ธาตุเจ้าเรือนเกิด (อิงตามเดือนเกิด)</span>
+                        <span class="value" id="result-birth-element">-</span>
+                    </div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-item">
+                        <span class="label">ธาตุปัจจุบันที่เด่น/เสียสมดุล</span>
+                        <span class="value highlight" id="result-current-element">-</span>
+                    </div>
+                </div>
+
+                <!-- Score Visualization -->
+                <div class="chart-section">
+                    <h3>สัดส่วนความสมดุลของธาตุทั้ง 4 ในร่างกายคุณ</h3>
+                    <div class="chart-container">
+                        <div class="svg-chart-wrapper">
+                            <!-- Radar Graph -->
+                            <svg viewBox="0 0 200 200" class="radial-svg" id="radar-chart">
+                                <!-- Base Grid Lines -->
+                                <circle cx="100" cy="100" r="80" class="grid-line" />
+                                <circle cx="100" cy="100" r="60" class="grid-line" />
+                                <circle cx="100" cy="100" r="40" class="grid-line" />
+                                <circle cx="100" cy="100" r="20" class="grid-line" />
+                                
+                                <!-- Axis Lines -->
+                                <line x1="100" y1="20" x2="100" y2="180" class="axis-line" />
+                                <line x1="20" y1="100" x2="180" y2="100" class="axis-line" />
+                                
+                                <!-- Labels -->
+                                <text x="100" y="15" text-anchor="middle" class="chart-label label-din">ธาตุดิน (ปถวี)</text>
+                                <text x="185" y="104" text-anchor="start" class="chart-label label-nam">ธาตุน้ำ (อาโป)</text>
+                                <text x="100" y="195" text-anchor="middle" class="chart-label label-lom">ธาตุลม (วาโย)</text>
+                                <text x="15" y="104" text-anchor="end" class="chart-label label-fai">ธาตุไฟ (เตโช)</text>
+
+                                <!-- Polygon for active element state -->
+                                <polygon points="100,100 100,100 100,100 100,100" class="chart-polygon" id="chart-poly" />
+                            </svg>
+                        </div>
+                        
+                        <!-- Chart Legend -->
+                        <div class="chart-legend">
+                            <div class="legend-item"><span class="dot color-din"></span> ธาตุดิน: <strong id="score-din">0</strong> / 21.5 คะแนน</div>
+                            <div class="legend-item"><span class="dot color-nam"></span> ธาตุน้ำ: <strong id="score-nam">0</strong> / 21.5 คะแนน</div>
+                            <div class="legend-item"><span class="dot color-lom"></span> ธาตุลม: <strong id="score-lom">0</strong> / 21.5 คะแนน</div>
+                            <div class="legend-item"><span class="dot color-fai"></span> ธาตุไฟ: <strong id="score-fai">0</strong> / 21.5 คะแนน</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personalized Recommendation Details -->
+                <div class="recommendation-box" id="recommendation-content">
+                    <!-- Loaded dynamically via JS -->
+                </div>
+
+                <div class="action-bar justify-center flex-column gap-3">
+                    <button type="button" id="btn-restart" class="btn btn-secondary w-full">ทำแบบประเมินอีกครั้ง</button>
+                    
+                    <!-- Share Button for LINE -->
+                    <a href="#" id="btn-liff-share" class="btn btn-primary w-full" style="background: #06C755; color: white;">
+                        💬 ชวนเพื่อนมาวิเคราะห์ธาตุเจ้าเรือน
+                    </a>
+                    
+                    <div class="cta-divider"><span>สนใจปรึกษาสุขภาพกับแพทย์แผนไทยเพิ่มเติม</span></div>
+                    
+                    <div class="cta-buttons">
+                        <a href="https://lin.ee/xYWIrcr" target="_blank" rel="noopener" class="btn btn-cta btn-line">
+                            <span class="cta-icon">💬</span> ติดต่อทาง LINE
+                        </a>
+                        <a href="http://m.me/BangkoktipOsod/" target="_blank" rel="noopener" class="btn btn-cta btn-facebook">
+                            <span class="cta-icon">📘</span> ติดต่อทาง Facebook
+                        </a>
+                        <a href="https://www.bangkoktip.com" target="_blank" rel="noopener" class="btn btn-cta btn-website">
+                            <span class="cta-icon">🌐</span> เว็บไซต์กรุงเทพทิพโอสถ
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer & Disclaimer -->
+        <footer class="app-footer">
+            <div class="disclaimer">
+                <strong>[!] ข้อควรระวังและคำแนะนำทางการแพทย์</strong>
+                <p>แบบประเมินนี้จัดทำเพื่อการเรียนรู้และสร้างความตระหนักรู้ด้านสุขภาพเบื้องต้นตามแนวคิดแพทย์แผนไทยเท่านั้น ไม่สามารถใช้ทดแทนการวินิจฉัยโรค สั่งการรักษา หรือระบุการรักษาของแพทย์ได้ หากท่านมีโรคประจำตัว อาการผิดปกติรุนแรงเฉียบพลัน หรือต้องการการวินิจฉัยโรคเพื่อรับการรักษา กรุณาปรึกษาแพทย์แผนไทย/แพทย์แผนไทยประยุกต์ที่มีใบประกอบวิชาชีพ หรือประสานงานแพทย์แผนปัจจุบันทันที</p>
+            </div>
+            <div class="brand-copyright">
+                <p>© 2026 บริษัท กรุงเทพทิพโอสถ จำกัด. สงวนลิขสิทธิ์</p>
+                <p>พัฒนาโดยอิงตำราการแพทย์แผนไทยและประกาศหลักเกณฑ์ตำรับยาแผนไทยของชาติ</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
